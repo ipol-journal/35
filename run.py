@@ -2,7 +2,7 @@
 
 import subprocess
 import argparse
-from PIL import Image, ImageChops
+import cv2
 
 # parse the arguments
 ap = argparse.ArgumentParser()
@@ -23,9 +23,9 @@ subprocess.run(["edges", "-r", str(args.th_fded), "-p", str(args.th_fded),"-s", 
                     "-h", str(args.rho), "input_0.png"])
 
 # Invert output images
-files = ["out_roberts", "out_prewitt", "out_sobel", "out_mh", "out_mhl", "out_haralick"]
+files = ["out_roberts.png", "out_prewitt.png", "out_sobel.png", "out_mh.png", "out_mhl.png", "out_haralick.png"]
 if args.inv == 1:
     for filename in files:
-        im = Image.open(filename + '.png')
-        inv_im = ImageChops.invert(im)
-        im.save(filename + '.png')
+        image = cv2.imread(filename)
+        image = ~image
+        cv2.imwrite(filename, image)
